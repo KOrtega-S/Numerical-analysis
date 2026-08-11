@@ -317,19 +317,6 @@ print("Last convergence orders:", order_bfgs[-5:])
 print("Last error ratios:", ratio_bfgs[-5:])
 
 
-# --------------------------------------------------
-# Stable experimental estimate of the convergence order
-#
-# Instead of using one local p_k (which can become very
-# unstable near machine precision), estimate p from:
-#
-#     log(e_{k+1}) = p log(e_k) + C
-#
-# using several of the last reliable iterations.
-# This avoids values such as Newton p = -11.76 that are
-# caused by numerical effects in a single local estimate.
-# --------------------------------------------------
-
 def regression_order(errors, window=8, min_error=1e-10):
     errors = np.asarray(errors, dtype=float)
     errors = errors[np.isfinite(errors) & (errors > min_error)]
@@ -353,18 +340,6 @@ def regression_order(errors, window=8, min_error=1e-10):
 p_gd = regression_order(gradient_norms_gd, window=8)
 p_newton = regression_order(gradient_norms_newton, window=8)
 p_bfgs = regression_order(gradient_norms_bfgs, window=8)
-
-print("\nStable experimental orders used in the graph:")
-print(f"Gradient descent: p = {p_gd:.2f}  (expected approximately 1)")
-print(f"Newton:           p = {p_newton:.2f}  (expected approximately 2)")
-print(f"BFGS:             p = {p_bfgs:.2f}  (superlinear behavior is p > 1)")
-
-
-# --------------------------------------------------
-# ONE GRAPH ONLY:
-# Experimental convergence order for ALL iterations
-# with a small zoom in the lower-right corner.
-# --------------------------------------------------
 
 fig, ax = plt.subplots(figsize=(12, 7))
 
@@ -479,7 +454,7 @@ if np.isfinite(p_bfgs):
     ax.text(
         0.78,
         0.42,
-        f"BFGS: p = {p_bfgs:.2f} (superlinear)",
+        f"BFGS: p = {p_bfgs:.2f}",
         transform=ax.transAxes,
         color="C2",
         fontsize=11,
