@@ -1,3 +1,11 @@
+# *********************************************************************************
+# Implementation Rosenbrock function optimization using Gradient Descent, Newton's Method, and BFGS
+# Course: Numerical Analysis
+# Professor: Jose Hernan Ortiz Ocampo
+# Student: Karina Ortega Sánchez
+# Semester: 2026-2
+# **********************************************************************************
+
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
