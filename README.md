@@ -1,42 +1,88 @@
-Optimization Project
-This repository contains the implementation of optimization algorithms developed for an numerical analysis course. 
-The project is divided into three main parts: linear programming, unconstrained nonlinear optimization, and constrained nonlinear optimization.
+# Numerical Analysis — Workshop Projects
 
-Requirements
+This repository contains two independent workshops developed for a numerical analysis course, covering classical optimization algorithms and optimal control theory.
 
-The project was developed in Python and uses the following libraries:
+---
 
+## Workshop 1 — Optimization Project
+
+Implementation of optimization algorithms from scratch, divided into three main parts: linear programming, unconstrained nonlinear optimization, and constrained nonlinear optimization.
+
+### Project Structure
+
+**Linear Optimization**
+Implementation of the Simplex method using reduced costs to solve linear programming problems.
+
+**Unconstrained Nonlinear Optimization**
+Three optimization algorithms for minimizing differentiable functions:
+- Gradient Descent
+- Damped Newton Method
+- BFGS (Broyden–Fletcher–Goldfarb–Shanno)
+
+**Constrained Nonlinear Optimization**
+Implementation of the exterior penalty method for solving optimization problems with equality and inequality constraints.
+
+### How to Run
+
+```bash
+# Linear Optimization
+python Simplex.py
+
+# Unconstrained Nonlinear Optimization
+python rosenbrock_optimization.py
+
+# Constrained Nonlinear Optimization
+python penalization.py
+```
+
+### Requirements
+
+```
 numpy>=1.24.0
-
 matplotlib>=3.7.0
-
 pandas>=2.0.0
-
 sympy>=1.12
+```
 
-Install all dependencies with:
+```bash
 pip install -r requirements.txt
+```
 
-Project Structure
+---
 
-•	Linear Optimization: Implementation of the Simplex method using reduced costs.
+## Workshop 2 — Dynamic Programming & Optimal Control
 
-•	Unconstrained Nonlinear Optimization: Implementation of the descent method.
-This part implements three optimization algorithms for minimizing differentiable functions:
-  -	Gradient Descent
-  -	Damped Newton Method
-  -	BFGS
-    
-•	Constrained Nonlinear Optimization: Implementation of penalty method.
-This part implements the exterior penalty method for solving optimization problems with equality and inequality constraints.
+Two independent implementations that compare classical algorithms and apply dynamic programming to a real control problem.
 
-How to Run
-Examples:
+### Part A — Dynamic Programming vs. Brute Force: Shortest Paths in a Staged Graph
 
-Linear Optimization: python Simplex.py
+Comparison of two algorithms for finding the minimum-cost path from S to T in a directed staged graph with N stages and k nodes per stage.
 
-Unconstrained Nonlinear Optimization: python rosenbrock_optimization.py
+**Algorithms implemented:**
+- Brute force: enumerates all k^N paths — complexity O(k^(N+1))
+- Bellman backward induction (discrete DP): solves each node exactly once — complexity O(N·k²)
 
-Constrained Nonlinear Optimization: python penalization.py
+```bash
+python DinámicaFuerza.py
+```
 
-The goal of this project is to implement classical optimization algorithms from scratch and compare their behavior on linear, nonlinear, and constrained optimization problems.
+### Part B — LQR Optimal Control: Drone Landing
+
+Implementation of a Linear Quadratic Regulator (LQR) for the vertical landing of a drone modeled as a double integrator. The optimal control law is derived by solving the Riccati differential equation backward in time.
+
+```bash
+python Riccati.py
+```
+
+### Requirements
+
+```
+numpy>=1.24.0
+matplotlib>=3.7.0
+scipy>=1.10.0
+```
+
+```bash
+pip install numpy matplotlib scipy
+```
+
