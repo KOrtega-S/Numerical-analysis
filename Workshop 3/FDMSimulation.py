@@ -46,7 +46,6 @@ if np.mean(blueness[: ny // 10] > 40) > 0.5:
     # the largest region touching the ground
     statue = ndi.binary_closing(labels == ids[sizes.argmax()], iterations=2 * refine)
     statue = ndi.binary_fill_holes(statue)
-    print("Segmentación por color")
 else:
     # Without a blue sky, binarize the grayscale image using Otsu's threshold
     hist, _ = np.histogram(gray, 256, (0, 256))
@@ -70,13 +69,12 @@ else:
     height = rows[-1] - rows[0]
     base = statue[rows[-1] - max(2, height // 20): rows[-1] + 1].any(axis=0)
     statue[rows[-1]:, base] = True
-    print(f"Segmentación en gris, umbral = {threshold:.0f}")
+    print(f"Grayscale segmentation, threshold = {threshold:.0f}")
 
 statue[-1, :] = True
 statue[0, :] = False
 
-# Mesh and linear system
-# Nodes with known values: the statue, the bottom edge and the cloud
+# Mesh and linear system: known nodes are the statue, the bottom edge and the cloud
 fixed = statue.copy()
 fixed[0, :] = True
 vFixed = np.zeros((ny, nx))
@@ -180,12 +178,9 @@ f[statue[::step, ::step]] = 0   # no arrows inside the statue
 ax.quiver(X, Y, U * f, W * f, color="k", width=0.0025)
 ax.plot(j0, i0, "c*", ms=16, mec="k")
 finishAxes(ax, "Equipotentials and electric field E", c)
-fig.savefig("1-4_resultados.png", dpi=130, bbox_inches="tight")
+fig.savefig("1-4_results.png", dpi=130, bbox_inches="tight")
 
-# 5. Lightning simulation: dielectric breakdown model (Niemeyer-Pietronero)
-# The bolt starts at a random point of the cloud and grows node by node. At each step a
-# neighbor of the channel is chosen with probability proportional to |E|^eta, the channel
-# takes the cloud potential and V is relaxed again. It ends when it touches the statue or the ground.
+# 5. Lightning (Niemeyer-Pietronero): the bolt grows from the cloud with probability ~ |E|^eta
 g = max(1, ny // 150)   # coarser mesh, otherwise each bolt takes too long
 statueCoarse = statue[::g, ::g].copy()
 statueCoarse[-1, :] = True
@@ -227,13 +222,10 @@ for r in range(nBolts):
         vBolt[i, j] = vCloud
         impact = neighborIn(i, j, statueCoarse)
         relax(vBolt, fixedBolt, 20)
-    hitPlace = "suelo" if impact[0] == nyCoarse - 1 else "estatua"
-    print(f"Rayo {r + 1:2d}: cae en {hitPlace:7s} fila {impact[0] * g / scale:4.0f}, "
-          f"columna {impact[1] * g / scale:4.0f} ({len(parent)} nodos de canal)")
+    hitPlace = "ground" if impact[0] == nyCoarse - 1 else "statue"
     bolts.append((parent, (i, j), impact, hitPlace))
 
-nOnStatue = sum(d == "estatua" for *_, d in bolts)
-print(f"{nOnStatue} de {nBolts} rayos cayeron en la estatua")
+nOnStatue = sum(d == "statue" for *_, d in bolts)
 
 fig, ax = plt.subplots(figsize=figSize)
 ax.imshow(rgb)
@@ -249,7 +241,7 @@ for (parent, tip, hit, _), color in zip(bolts, plt.cm.tab10(np.arange(nBolts) % 
     ax.plot(hit[1] * g, hit[0] * g, "o", color=color, mec="k", ms=8)
 ax.plot(j0, i0, "c*", ms=16, mec="k")
 finishAxes(ax, f"{nBolts} simulated lightning bolts ({nOnStatue} on the statue)")
-plt.savefig("5_rayos.png", dpi=130, bbox_inches="tight")
+plt.savefig("5_lightning.png", dpi=130, bbox_inches="tight")
 
 # Show all figures at the same time
 plt.show()
