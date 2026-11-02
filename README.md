@@ -1,6 +1,6 @@
 # Numerical Analysis — Workshop Projects
 
-This repository contains two independent workshops developed for a numerical analysis course, covering classical optimization algorithms and optimal control theory.
+This repository contains three independent workshops developed for a numerical analysis course, covering classical optimization algorithms, optimal control theory, and numerical methods for differential equations (finite differences and finite elements).
 
 ---
 
@@ -86,3 +86,47 @@ scipy>=1.10.0
 pip install numpy matplotlib scipy
 ```
 
+---
+
+## Workshop 3 — Finite Differences & Finite Elements
+
+Two implementations of classical discretization methods for boundary value problems.
+
+### Part A — Finite Difference Method: Lightning Strike on a Statue
+
+Solves the Laplace equation ∇²V = 0 on a 2D grid built from a photograph of a statue (e.g. Cristo Redentor). The image is segmented to separate the statue from the sky, and Dirichlet conditions are imposed on the statue (grounded), the bottom edge, and the cloud at the top.
+
+**Steps implemented:**
+- Image segmentation (blue-sky detection, with Otsu thresholding as fallback)
+- Mesh generation and assembly of the sparse linear system using the 5-point stencil
+- Computation of the potential, equipotential lines and electric field |E|
+- Lightning simulation with the Niemeyer–Pietronero dielectric breakdown model, where the bolt grows with probability proportional to |E|^η
+
+**Outputs:** `1-4_results.png` (segmentation, mesh, potential and field) and `5_lightning.png` (simulated bolts).
+
+> Before running, set `imagePath` at the top of `FDMSimulation.py` to the location of your image.
+
+```bash
+python FDMSimulation.py
+```
+
+### Part B — 1D Finite Element Method
+
+Solves the boundary value problem −u'' = π² sin(πx) on [0, 1] with u(0) = u(1) = 0 using linear finite elements on a random non-uniform mesh. The load vector is integrated with 2-point Gauss quadrature, and the numerical solution is compared against the exact solution u(x) = sin(πx), reporting the maximum nodal error.
+
+```bash
+python FEM1D.py
+```
+
+### Requirements
+
+```
+numpy>=1.24.0
+matplotlib>=3.7.0
+scipy>=1.10.0
+pillow>=10.0.0
+```
+
+```bash
+pip install numpy matplotlib scipy pillow
+```
