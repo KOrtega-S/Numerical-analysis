@@ -90,7 +90,7 @@ pip install numpy matplotlib scipy
 
 ## Workshop 3 — Finite Differences & Finite Elements
 
-Two implementations of classical discretization methods for boundary value problems.
+Implementations of classical discretization methods for differential equations, plus a stability analysis of an explicit scheme.
 
 ### Part A — Finite Difference Method: Lightning Strike on a Statue
 
@@ -116,6 +116,14 @@ Solves the boundary value problem −u'' = π² sin(πx) on [0, 1] with u(0) = u
 
 ```bash
 python FEM1D.py
+```
+
+### Part C — Von Neumann Stability of the Explicit Heat Equation
+
+Derivation of the amplification factor G(θ) = 1 − 4r sin²(θ/2) for the explicit (FTCS) scheme of the heat equation u_t = κ u_xx, showing that it is conditionally stable under r = κΔt/Δx² ≤ 1/2.
+
+```bash
+jupyter notebook solution_problem2.ipynb
 ```
 
 ### Requirements
