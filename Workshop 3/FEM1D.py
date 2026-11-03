@@ -13,10 +13,10 @@ nInternal = 20   # number of internal nodes, not counting the two endpoints
 seed = 5        # fixes the mesh so it comes out the same on every run
 
 def f(x):
-    return np.pi**2 * np.sin(np.pi * x)
+    return 4 * np.pi**2 * np.sin(2 * np.pi * x)
 
 def uExact(x):
-    return np.sin(np.pi * x)
+    return np.sin(2 * np.pi * x)
 
 # Mesh
 
